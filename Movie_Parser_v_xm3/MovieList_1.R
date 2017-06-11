@@ -24,7 +24,7 @@ myHttpheader<- c(
   "Host"="www.boxofficemojo.com"
 )
 
-for(j in 1980:2016)
+for(j in 1996:2016)
 {
   for(i in 1:5)
   {

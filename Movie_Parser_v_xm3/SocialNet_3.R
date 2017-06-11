@@ -7,7 +7,7 @@ library(httr)
 library(chron)
 require(Rfacebook)
 
-tok = 'EAACEdEose0cBAEoW2eO8GqKHz7zGiXDtm29CszRk4FAlVMOsACESjKBuZAnmirw2u5HNNrDEHA7LuKZCdItM67QNitW4qPEPuGXhAFAGMiMc5Tp9vQqbzsHczJ6Ce0s2eamPV0CjZBe2QS9ccrLvOFx9LZA2Q7HmDyifonjspAhHK33OFH7ZCWjZBcVCFXVWgZD'
+tok  = 'EAACEdEose0cBAEoW2eO8GqKHz7zGiXDtm29CszRk4FAlVMOsACESjKBuZAnmirw2u5HNNrDEHA7LuKZCdItM67QNitW4qPEPuGXhAFAGMiMc5Tp9vQqbzsHczJ6Ce0s2eamPV0CjZBe2QS9ccrLvOFx9LZA2Q7HmDyifonjspAhHK33OFH7ZCWjZBcVCFXVWgZD'
 
 alldata = read.csv("Fulllist.csv")
 
