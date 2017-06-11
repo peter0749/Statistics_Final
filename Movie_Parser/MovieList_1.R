@@ -2,6 +2,7 @@ require(XML)
 require(bitops)
 require(RCurl)
 require(httr)
+source('./Functions.R')
 
 rm(list=ls(all=TRUE))
 yahoourl = "http://www.boxofficemojo.com/yearly/chart/?page="
@@ -24,7 +25,7 @@ myHttpheader<- c(
   "Host"="www.boxofficemojo.com"
 )
 
-for(j in 1980:2016)
+for(j in 1996:2017)
 {
   for(i in 1:10)
   {
@@ -56,8 +57,9 @@ for(j in 1980:2016)
 names(testframe) = c("Title","Path","Box")
 
 #Post-processing and sorting
-testframe$Box = substring(testframe$Box,2)
-testframe$Box = gsub(",","",testframe$Box)
+#testframe$Box = substring(testframe$Box,2)
+#testframe$Box = gsub(",","",testframe$Box)
+testframe$Box = pureDigit(testframe$Box)
 testframe$Box = as.numeric(testframe$Box)
 testframe = testframe[order(testframe$Box,decreasing=TRUE),]
 

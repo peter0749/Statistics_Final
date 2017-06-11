@@ -6,9 +6,9 @@ library(NLP)
 library(httr)
 library(chron)
 require(Rfacebook)
+source('./Functions.R')
 
 tok = 'your token'
-
 alldata = read.csv("Fulllist.csv")
 
 youtubeSRC = 'https://www.youtube.com/results?q='
@@ -38,8 +38,9 @@ for( i in 1:length(alldata$X))
     xml = htmlParse(html, encoding='UTF-8')
     text = xpathSApply(xml,'//li/div/div/div[2]/div[2]/ul/li[2]/text()', sessionEncoding='utf8', xmlValue)
     if(length(text)<1) next
-    text = substring(text,6)
-    text <- gsub(",","",text)
+    #text = substring(text,6)
+    #text <- gsub(",","",text)
+    text <- pureDigit(text)
     text <- as.numeric(text)
     testframe$'YoutubeViews' = t(text)[1]
     testframe = cbind(alldata[i,-1],testframe)

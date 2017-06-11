@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "pureDigit <- function(X){ as.numeric(gsub('[^[:digit:]]','', as.character(X))) } #convert string to valid numeric type\n",
+    "created" : 1497161629184.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2749609574",
+    "id" : "EC42C89C",
+    "lastKnownWriteTime" : 1497160888,
+    "last_content_update" : 1497160888,
+    "path" : "~/Movie_Parser/Functions.R",
+    "project_path" : "Functions.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

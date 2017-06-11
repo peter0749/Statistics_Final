@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls(all=TRUE))\nrequire(XML)\nrequire(bitops)\nrequire(RCurl)\nrequire(NLP)\nrequire(httr)\nrequire(chron)\nsource('./Functions.R')\n\nalldata = read.csv('testcsv.csv')\norgURL = 'http://www.boxofficemojo.com'\nfulldata = data.frame()\n\nmyHttpheader<- c(\n  \"User-Agent\"=\"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36\",\n  \"Accept\"=\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\n  \"Connection\"=\"keep-alive\",\n  \"Accept-Charset\"=\"big5,GB2312,utf-8;q=0.7,*;q=0.7\",\n  \"Accept-Encoding\"=\"gzip, deflate, sdch\",\n  \"Accept-Language\"=\"zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4\",\n  \"Upgrade-Insecure-Requests\"=\"1\",\n  \"Cache-Control\"=\"max-age=0\",\n  \"Cookie\"=\"__utmt=1; __utma=137419939.1443367072.1468586224.1468720076.1468727749.10; __utmb=137419939.3.10.1468727749; __utmc=137419939; __utmz=137419939.1468600072.4.2.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)\",\n  \"Host\"=\"www.boxofficemojo.com\",\n  \"Referer\"=\"http://www.boxofficemojo.com/yearly/\"\n)\n\ni=1\nfor( i in i:length(alldata$X))\n{\n  yahooURL <- paste(orgURL, alldata$Path[i], sep='')\n  #yahooURL <- iconv(yahooURL, \"big5\", \"utf8\")\n  #Encoding(yahooURL) = \"UTF-8\"\n  print(yahooURL)\n  URLExist = url.exists(yahooURL)\n  print(URLExist)\n  if(URLExist)\n  {\n    html = getURL(yahooURL, ssl.verifypeer = FALSE, encoding='UTF-8', httpheader = myHttpheader)\n    xml = htmlParse(html, encoding='UTF-8')\n    text = xpathSApply(xml, '//tr[@bgcolor=\"#ffffff\"]/td[@valign=\"top\"]/b', sessionEncoding='UTF-8', xmlValue)\n    if (length(text)<6) next\n    hasDirector = xpathSApply(xml, '//td[2]//div[@class=\"mp_box_content\"]//tr[1]//td[1]//font[@size=\"2\"]//text()', sessionEncoding='UTF-8', xmlValue)\n    director = NA\n    if (length(hasDirector) > 0 && substring(hasDirector,1, 8)=='Director') {\n      director = xpathSApply(xml, '//td[2]//div[@class=\"mp_box_content\"]//tr[1]//td[2]//font[@size=\"2\"]//text()', sessionEncoding='UTF-8', xmlValue)[1]\n    }\n    testframe = data.frame(t(text), director)\n    names(testframe) = c(\"Distrubutor\",\"Release Date\",\"Genre\",\"Runtime\",\"MPAA\",\"Budget\", \"Director\")\n    testframe = cbind(alldata[i,-1],testframe)\n    fulldata = rbind(fulldata, testframe)\n  }\n}\n\n#Post-processing\nfulldata$Runtime = gsub(\" hrs. \",\":\",fulldata$Runtime)\nfulldata$Runtime = gsub(\" min.\",\":00\",fulldata$Runtime)\nfulldata$Runtime = chron::times(fulldata$Runtime)\nfulldata$Runtime = chron::hours(fulldata$Runtime)*60 + minutes(fulldata$Runtime)\nfulldata$'Release Date' = gsub(\",\",\"\",fulldata$'Release Date')\nfulldata$'Release Date' = gsub(\" |[0-9]\",\"\",fulldata$'Release Date')\n#fulldata$Budget = substring(fulldata$Budget,2)\n#fulldata$Budget = gsub(\" million\",\"\",fulldata$Budget)\nfulldata$Budget = pureDigit(fulldata$Budget)\nfulldata$Budget = as.numeric(fulldata$Budget)\n\nwrite.csv(fulldata,\"Fulllist.csv\")",
+    "created" : 1497161614512.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3752630460",
+    "id" : "E2E0D518",
+    "lastKnownWriteTime" : 1497160916,
+    "last_content_update" : 1497160916,
+    "path" : "~/Movie_Parser/MovieContent_2.R",
+    "project_path" : "MovieContent_2.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

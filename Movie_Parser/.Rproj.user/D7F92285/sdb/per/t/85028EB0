@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls(all=TRUE))\ninstall.packages(c('XML', 'bitops', 'RCurl', 'NLP', 'Rfacebook', 'httr', 'chron'))\n",
+    "created" : 1497161610550.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "195263097",
+    "id" : "85028EB0",
+    "lastKnownWriteTime" : 1497146684,
+    "last_content_update" : 1497146684,
+    "path" : "~/Movie_Parser/DownloadPkg_0.R",
+    "project_path" : "DownloadPkg_0.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

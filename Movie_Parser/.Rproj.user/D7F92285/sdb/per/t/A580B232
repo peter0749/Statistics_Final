@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "require(XML)\nrequire(bitops)\nrequire(RCurl)\nrequire(httr)\nsource('./Functions.R')\n\nrm(list=ls(all=TRUE))\nyahoourl = \"http://www.boxofficemojo.com/yearly/chart/?page=\"\nappendurl_1 = \"&view=releasedate&view2=domestic&yr=\"\nappendurl_2 = \"&p=.htm\"\ntesturl = \"\"\ntestvector = c()\ntestframe = data.frame()\n\nmyHttpheader<- c(\n  \"User-Agent\"=\"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36\",\n  \"Accept\"=\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\n  \"Connection\"=\"keep-alive\",\n  \"Accept-Charset\"=\"big5,GB2312,utf-8;q=0.7,*;q=0.7\",\n  \"Accept-Encoding\"=\"gzip, deflate, sdch\",\n  \"Accept-Language\"=\"zh-TW,zh;q=0.8,en-US;q=0.6,en;q=0.4\",\n  \"Upgrade-Insecure-Requests\"=\"1\",\n  \"Cache-Control\"=\"max-age=0\",\n  \"Cookie\"=\"__utmt=1; __utma=137419939.1443367072.1468586224.1468720076.1468727749.10; __utmb=137419939.13.10.1468727749; __utmc=137419939; __utmz=137419939.1468600072.4.2.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)\",\n  \"Host\"=\"www.boxofficemojo.com\"\n)\n\nfor(j in 1996:2017)\n{\n  for(i in 1:10)\n  {\n    testurl = paste(yahoourl,i,appendurl_1,j,appendurl_2,sep='')\n    testexist = url.exists(testurl)\n    print(testurl)\n    print(testexist)\n    if(testexist)\n    {\n      html = getURL(testurl, ssl.verifypeer = FALSE, encoding='UTF-8', httpheader = myHttpheader)\n      xml = htmlParse(html, encoding='UTF-8')\n      path = xpathSApply(xml,'//table//td[2]/b/font[@size=\"2\"]/a/@href',sessionEncoding='UTF-8')\n      if(length(path)<1) break\n      title = xpathSApply(xml,'//table//td[2]/b/font[@size=\"2\"]/a[@href]',sessionEncoding='UTF-8',xmlValue)\n      if(length(title)<1) break\n      box = xpathSApply(xml,'//table//td[4]/font[@size=\"2\"]/b',sessionEncoding='UTF-8',xmlValue)\n      if(length(box)<1) break\n      \n      testlen = length(path)\n      \n      if(length(title)!=testlen || length(box)!=testlen) next\n      tempframe = data.frame(title,path,box)\n      testframe = rbind(testframe,tempframe)\n    }\n    else print(paste(\"assert: URL:\",testurl,\"not exist!\"))\n  }\n}\n\nnames(testframe) = c(\"Title\",\"Path\",\"Box\")\n\n#Post-processing and sorting\n#testframe$Box = substring(testframe$Box,2)\n#testframe$Box = gsub(\",\",\"\",testframe$Box)\ntestframe$Box = pureDigit(testframe$Box)\ntestframe$Box = as.numeric(testframe$Box)\ntestframe = testframe[order(testframe$Box,decreasing=TRUE),]\n\nwrite.csv(testframe,\"testcsv.csv\")",
+    "created" : 1497161636248.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3124394051",
+    "id" : "A580B232",
+    "lastKnownWriteTime" : 1497161668,
+    "last_content_update" : 1497161668104,
+    "path" : "~/Movie_Parser/MovieList_1.R",
+    "project_path" : "MovieList_1.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

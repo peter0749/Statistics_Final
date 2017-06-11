@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls(all=TRUE))\nlibrary(XML)\nlibrary(bitops)\nlibrary(RCurl)\nlibrary(NLP)\nlibrary(httr)\nlibrary(chron)\nrequire(Rfacebook)\nsource('./Functions.R')\n\ntok = 'your token'\nalldata = read.csv(\"Fulllist.csv\")\n\nyoutubeSRC = 'https://www.youtube.com/results?q='\nyAppendURL = '%20trailer&sp=CAA%253D'\nyoutubeURL = ''\n\nfulldata = data.frame()\n\nmyHttpheader<- c(\n  \"User-Agent\"=\"Chrome/51.0.2704.103\",\n  \"Upgrade-Insecure-Requests\"=\"1\"\n)\n\nfor( i in 1:length(alldata$X))\n{\n  testframe = data.frame( 'FB_likes' = Rfacebook::searchPages(alldata$Title[i], tok, n=1)$likes , 'YoutubeViews'=NA)\n  youtubeURL <- paste(youtubeSRC, alldata$Title[i], yAppendURL, sep='')\n  youtubeURL <- gsub(\" \",\"%20\",youtubeURL)\n  #youtubeURL <- iconv(youtubeURL, \"big5\", \"utf8\")\n  #Encoding(youtubeURL) = \"UTF-8\"\n  print(youtubeURL)\n  URLExist = url.exists(youtubeURL)\n  print(URLExist)\n  if(URLExist)\n  {\n    html = getURL(youtubeURL, ssl.verifypeer = FALSE, encoding='UTF-8', httpheader = myHttpheader)\n    xml = htmlParse(html, encoding='UTF-8')\n    text = xpathSApply(xml,'//li/div/div/div[2]/div[2]/ul/li[2]/text()', sessionEncoding='utf8', xmlValue)\n    if(length(text)<1) next\n    #text = substring(text,6)\n    #text <- gsub(\",\",\"\",text)\n    text <- pureDigit(text)\n    text <- as.numeric(text)\n    testframe$'YoutubeViews' = t(text)[1]\n    testframe = cbind(alldata[i,-1],testframe)\n    fulldata = rbind(fulldata, testframe)\n  }\n}\n\nwrite.csv(fulldata,\"Youtubelist.csv\")",
+    "created" : 1497161672687.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2872636870",
+    "id" : "F4B86E0E",
+    "lastKnownWriteTime" : 1497161521,
+    "last_content_update" : 1497161521,
+    "path" : "~/Movie_Parser/SocialNet_3.R",
+    "project_path" : "SocialNet_3.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
