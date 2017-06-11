@@ -24,7 +24,8 @@ myHttpheader<- c(
   "Referer"="http://www.boxofficemojo.com/yearly/"
 )
 
-for( i in 1:length(alldata$X))
+i=1
+for( i in i:length(alldata$X))
 {
   yahooURL <- paste(orgURL, alldata$Path[i], sep='')
   #yahooURL <- iconv(yahooURL, "big5", "utf8")
@@ -42,7 +43,7 @@ for( i in 1:length(alldata$X))
     if(length(hasDirector)<1 || substring(hasDirector,1, 8)!='Director') next
     director = xpathSApply(xml, '//td[2]//div[@class="mp_box_content"]//tr[1]//td[2]//font[@size="2"]//text()', sessionEncoding='UTF-8', xmlValue)
     if(length(director)<1) next
-    testframe = data.frame(t(text), director)
+    testframe = data.frame(t(text), director[1])
     names(testframe) = c("Distrubutor","Release Date","Genre","Runtime","MPAA","Budget", "Director")
     testframe = cbind(alldata[i,-1],testframe)
     fulldata = rbind(fulldata, testframe)
