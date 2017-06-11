@@ -2,9 +2,9 @@ require(XML)
 require(bitops)
 require(RCurl)
 require(httr)
-pureDigit <- function(X){ as.numeric(gsub('[^[:digit:]]','', as.character(X))) } #convert string to valid numeric type
-
 rm(list=ls(all=TRUE))
+source('./Functions.R')
+
 yahoourl = "http://www.boxofficemojo.com/yearly/chart/?page="
 appendurl_1 = "&view=releasedate&view2=domestic&yr="
 appendurl_2 = "&p=.htm"

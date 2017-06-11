@@ -6,7 +6,7 @@ require(NLP)
 require(httr)
 require(chron)
 require(Rfacebook)
-pureDigit <- function(X){ as.numeric(gsub('[^[:digit:]]','', as.character(X))) } #convert string to valid numeric type
+source('./Functions.R')
 
 tok = 'your token'
 alldata = read.csv("Fulllist.csv")
