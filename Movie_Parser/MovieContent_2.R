@@ -38,12 +38,13 @@ for( i in i:length(alldata$X))
     html = getURL(yahooURL, ssl.verifypeer = FALSE, encoding='UTF-8', httpheader = myHttpheader)
     xml = htmlParse(html, encoding='UTF-8')
     text = xpathSApply(xml, '//tr[@bgcolor="#ffffff"]/td[@valign="top"]/b', sessionEncoding='UTF-8', xmlValue)
-    if(length(text)<6) next
+    if (length(text)<6) next
     hasDirector = xpathSApply(xml, '//td[2]//div[@class="mp_box_content"]//tr[1]//td[1]//font[@size="2"]//text()', sessionEncoding='UTF-8', xmlValue)
-    if(length(hasDirector)<1 || substring(hasDirector,1, 8)!='Director') next
-    director = xpathSApply(xml, '//td[2]//div[@class="mp_box_content"]//tr[1]//td[2]//font[@size="2"]//text()', sessionEncoding='UTF-8', xmlValue)
-    if(length(director)<1) next
-    testframe = data.frame(t(text), director[1])
+    director = NA
+    if (length(hasDirector) > 0 && substring(hasDirector,1, 8)=='Director') {
+      director = xpathSApply(xml, '//td[2]//div[@class="mp_box_content"]//tr[1]//td[2]//font[@size="2"]//text()', sessionEncoding='UTF-8', xmlValue)[1]
+    }
+    testframe = data.frame(t(text), director)
     names(testframe) = c("Distrubutor","Release Date","Genre","Runtime","MPAA","Budget", "Director")
     testframe = cbind(alldata[i,-1],testframe)
     fulldata = rbind(fulldata, testframe)
