@@ -1,12 +1,12 @@
 rm(list=ls(all=TRUE))
-library(XML)
-library(bitops)
-library(RCurl)
-library(NLP)
-library(httr)
-library(chron)
+require(XML)
+require(bitops)
+require(RCurl)
+require(NLP)
+require(httr)
+require(chron)
 require(Rfacebook)
-source('./Functions.R')
+pureDigit <- function(X){ as.numeric(gsub('[^[:digit:]]','', as.character(X))) } #convert string to valid numeric type
 
 tok = 'your token'
 alldata = read.csv("Fulllist.csv")

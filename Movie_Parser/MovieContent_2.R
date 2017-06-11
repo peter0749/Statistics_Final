@@ -5,7 +5,7 @@ require(RCurl)
 require(NLP)
 require(httr)
 require(chron)
-source('./Functions.R')
+pureDigit <- function(X){ as.numeric(gsub('[^[:digit:]]','', as.character(X))) } #convert string to valid numeric type
 
 alldata = read.csv('testcsv.csv')
 orgURL = 'http://www.boxofficemojo.com'
