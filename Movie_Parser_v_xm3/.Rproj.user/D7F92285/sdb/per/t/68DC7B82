@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls(all=TRUE))\n\nsource('./DownloadPkg_0.R')\nsource('./MovieList_1.R')\nsource('./MovieContent_2.R')\nsource('./SocialNet_3.R')\n\nprint('done')",
+    "created" : 1497148776579.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "989324145",
+    "id" : "68DC7B82",
+    "lastKnownWriteTime" : 1497148869,
+    "last_content_update" : 1497148869544,
+    "path" : "~/Movie_Parser/Procedure.R",
+    "project_path" : "Procedure.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
