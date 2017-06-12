@@ -21,3 +21,17 @@ subData <- data
 test = rpart(Box ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=data)
 rpart.plot(test)
 summary(test)
+
+require(party)
+
+test = ctree(Box ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=data, controls = ctree_control(maxdepth = 4))
+plot(test)
+summary(test)
+
+test = ctree(Box ~ Release.Date+MPAA, data=data, controls = ctree_control(maxdepth = 2))
+plot(test)
+summary(test)
+
+test = ctree(Box ~ YoutubeViews+FB_likes, data=data, controls = ctree_control(maxdepth = 2))
+plot(test)
+summary(test)
