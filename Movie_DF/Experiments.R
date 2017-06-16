@@ -54,7 +54,7 @@ for(i in 1:length(ftypes)) {
   plot(p)
 }
 
-movie_aov <- aov(data = data, Box ~ Runtime * Budget * FB_likes * YoutubeViews )
+movie_aov <- aov(data = data, Box ~ FB_likes * YoutubeViews * Runtime * Budget)
 summary_movie_aov <- summary(movie_aov)
 summary_movie_aov
 ## 測試的結果： Box ~ Budge (預算會影響票房)
