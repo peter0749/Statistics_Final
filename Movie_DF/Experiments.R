@@ -18,11 +18,10 @@ find_mode <- function(x) {
 data <- read.csv('./Youtubelist.csv', header=TRUE)
 data <- subset(data, select= -c(X, Path) )
 
-observations <- summary(data)
+#data <- subset(data, !(is.na(Release.Date)|is.na(Runtime)|is.na(MPAA)))
 
-decision_tree = rpart(Box ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=data)
-rpart.plot(decision_tree)
-summary(decision_tree)
+
+observations <- summary(data)
 
 dtypes = c(2,6,8,10,11)
 dnames = names(data)[dtypes]
@@ -65,3 +64,30 @@ summary_movie_aov
 ## 個別的影響，因為 
 ## FB_likes:YoutubeViews, FB_likes:Runtime, FB_likes:YoutubeViews:Runtime
 ## 是顯著的，所以我們只能假設，FB 按讚數、Youtube 瀏覽數、電影時長的組合，會影響電影票房
+
+valid_idx <- sample(x = nrow(data), size = nrow(data)/4)
+
+train_data <- data[-valid_idx,]
+valid_data <- data[valid_idx,]
+
+regression_tree = rpart(Box ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=train_data)
+rpart.plot(regression_tree)
+summary(regression_tree)
+
+pred <- predict(regression_tree, valid_data[,-2])
+valid_data <- cbind(valid_data, pred, err=pred-valid_data$Box)
+tl_rt_err <- sum(valid_data$er) / nrow(valid_data)
+
+train_data$Win <- (train_data$Box>1e8) ## 是否票房破億
+valid_data$Win <- (valid_data$Box>1e8)
+
+decision_tree = rpart(Win ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=train_data)
+rpart.plot(decision_tree)
+summary(decision_tree)
+
+pred <- predict(decision_tree, valid_data[,-c(2, 12, 13, 14)])
+valid_data$predWin <- pred
+
+valid.table <- table(pred=pred, true=valid_data$Win)
+decision_tree_acc <- sum(diag(valid.table)/sum(valid.table)) * 100.0
+
