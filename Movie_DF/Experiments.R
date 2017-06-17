@@ -31,6 +31,10 @@ for(i in 1:length(dtypes)) {
   names(temp) = c('x')
   tmean = mean(temp$x)
   tmedian = median(temp$x)
+  countTemp <- count(temp$x)
+  names(countTemp) = c('x','freq')
+  
+  boxplot(x=countTemp$x, y=countTemp$freq, outline = FALSE, horizontal = TRUE, xlab=dnames[i], ylab='')
   
   p <- ggplot(data = temp, aes(x=x)) + geom_density() + xlab(dnames[i])
   #p_log <- p + geom_vline(xintercept = sumx, colour=c('red', 'green', 'blue', 'magenta', 'yellow', 'orange')) + scale_x_log10()
