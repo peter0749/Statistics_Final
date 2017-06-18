@@ -8,7 +8,7 @@ require(chron)
 require(Rfacebook)
 source('./Functions.R')
 
-tok = 'your token'
+tok = 'your token' 
 alldata = read.csv("Fulllist.csv")
 
 youtubeSRC = 'https://www.youtube.com/results?q='
