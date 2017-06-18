@@ -85,13 +85,13 @@ tl_rt_err <- sum(valid_data$er) / nrow(valid_data)
 train_data$Win <- (train_data$Box>1e8) ## 是否票房破億
 valid_data$Win <- (valid_data$Box>1e8)
 
-decision_tree = rpart(Win ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=train_data)
+decision_tree = rpart(Win ~ Release.Date+Runtime+MPAA+Budget+FB_likes+YoutubeViews, data=train_data, method='class')
 rpart.plot(decision_tree)
 summary(decision_tree)
 
-pred <- predict(decision_tree, valid_data[,-c(2, 12, 13, 14)])
-valid_data$predWin <- pred
+pred_v <- as.data.frame(predict(decision_tree, valid_data[,-c(2, 12, 13, 14)]))
+valid_data$predWin <- pred_v[,2] > pred_v[,1]
 
-valid.table <- table(pred=pred, true=valid_data$Win)
+valid.table <- table(pred=valid_data$predWin, true=valid_data$Win)
 decision_tree_acc <- sum(diag(valid.table)/sum(valid.table)) * 100.0
 
